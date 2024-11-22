@@ -1,0 +1,60 @@
+class Television:
+    # Class variables
+    MIN_VOLUME = 0
+    MAX_VOLUME = 2
+    MIN_CHANNEL = 0
+    MAX_CHANNEL = 3
+
+    def __init__(self):
+        """Initializes the TV with default settings."""
+        self.__status = False  # TV is initially off
+        self.__muted = False  # TV is initially not muted
+        self.__volume = self.MIN_VOLUME  # Set to minimum volume
+        self.__channel = self.MIN_CHANNEL  # Set to minimum channel
+
+    def power(self):
+        """Toggles the TV power status."""
+        self.__status = not self.__status
+
+    def mute(self):
+        """Mutes or unmutes the TV."""
+        if self.__status:  # Only mute if the TV is on
+            self.__muted = not self.__muted
+
+    def channel_up(self):
+        """Increases the TV channel, wraps around at the max channel."""
+        if self.__status:  # Only change channels if the TV is on
+            if self.__channel == self.MAX_CHANNEL:
+                self.__channel = self.MIN_CHANNEL
+            else:
+                self.__channel += 1
+
+    def channel_down(self):
+        """Decreases the TV channel, wraps around at the min channel."""
+        if self.__status:  # Only change channels if the TV is on
+            if self.__channel == self.MIN_CHANNEL:
+                self.__channel = self.MAX_CHANNEL
+            else:
+                self.__channel -= 1
+
+    def volume_up(self):
+        """Increases the TV volume up to the max, unmutes if muted."""
+        if self.__status:  # Only change volume if the TV is on
+            if self.__muted:
+                self.__muted = False
+            if self.__volume < self.MAX_VOLUME:
+                self.__volume += 1
+
+    def volume_down(self):
+        """Decreases the TV volume down to the min, unmutes if muted."""
+        if self.__status:  # Only change volume if the TV is on
+            if self.__muted:
+                self.__muted = False
+            if self.__volume > self.MIN_VOLUME:
+                self.__volume -= 1
+
+    def __str__(self):
+        """Returns the current state of the TV as a string."""
+        power_status = "True" if self.__status else "False"
+        volume_display = "0" if self.__muted else self.__volume
+        return f"Power = {power_status}, Channel = {self.__channel}, Volume = {volume_display}"
